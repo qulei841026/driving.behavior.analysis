@@ -1,0 +1,30 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="3"
+        android:entries="@array/filter_titles"
+        android:entryValues="@array/filter_values"
+        android:key="filter"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_filter" />
+
+    <ListPreference
+        android:defaultValue="200"
+        android:entries="@array/delay_millis_titles"
+        android:entryValues="@array/delay_millis_values"
+        android:key="delay_millis"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_delay_millis" />
+
+    <ListPreference
+        android:defaultValue="4"
+        android:entries="@array/axis_titles"
+        android:entryValues="@array/axis_values"
+        android:key="axis"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_axis" />
+
+</PreferenceScreen>
