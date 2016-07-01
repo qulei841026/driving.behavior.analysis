@@ -12,16 +12,21 @@ public class FilterAlgorithm {
         filter = Integer.valueOf(Utils.getString(context, "filter", "3"));
     }
 
-
     public float averageFilter(float value) {
-        average = (average + value) / 2;
+        if (filter == 1)
+            return value;
+
         if (nAverage < filter) {
+            average = (average + value) / 2;
             nAverage++;
             return -1f;
         } else {
             nAverage = 0;
-            return average;
+            float result = average;
+            average = 0;
+            return result;
         }
+
     }
 
     private float limitTemp;

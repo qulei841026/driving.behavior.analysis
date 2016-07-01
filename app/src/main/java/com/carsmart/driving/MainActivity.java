@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity
     TextView tv2;
     TextView tv3;
 
+    TextView tv10;
+
     SensorProvider sensorProvider;
 
     LogProvider logProvider;
@@ -86,6 +88,25 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        sensorProvider.setStateAnalyzingListener(new StateAnalyzing.OnStateAnalyzingListener() {
+            @Override
+            public void onStateAnalyzing(int state) {
+
+                switch (state) {
+                    case 1:
+                        tv10.setText("相对静止状态");
+                        break;
+                    case 2:
+                        tv10.setText("步行状态");
+                        break;
+                    case 3:
+                        tv10.setText("使用状态");
+                        break;
+                }
+
+            }
+        });
+
 
         FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.fab1);
         fab1.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +125,7 @@ public class MainActivity extends AppCompatActivity
                 down = 0;
                 logicProcessor.setVelocity(0f);
                 tv0.setText("");
+                tv10.setText("");
                 logProvider.destroy();
                 sensorProvider.destroy();
                 accelerations.clear();
@@ -118,6 +140,8 @@ public class MainActivity extends AppCompatActivity
         tv2 = (TextView) findViewById(R.id.tv2);
 
         tv3 = (TextView) findViewById(R.id.tv3);
+
+        tv10 = (TextView) findViewById(R.id.tv10);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

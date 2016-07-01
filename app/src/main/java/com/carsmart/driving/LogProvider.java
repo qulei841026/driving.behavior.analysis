@@ -22,12 +22,17 @@ public class LogProvider {
     FileOutputStream fos3;
     FileOutputStream fos4;
 
+    boolean isLog = false;
+
     public LogProvider(Context context) {
         appPath = ((App) context.getApplicationContext()).appFilePath;
     }
 
 
     public void init() {
+        if (!isLog)
+            return;
+
         String timeFile = DateUtils.formatDate(System.currentTimeMillis(), DateUtils.DATE_FORMAT_2);
         currentFile = appPath + "/" + timeFile;
         FileUtils.createFolder(new File(currentFile));
@@ -66,6 +71,7 @@ public class LogProvider {
     }
 
     public void destroy() {
+
         if (fos1 != null) {
             try {
                 fos1.close();
@@ -127,6 +133,10 @@ public class LogProvider {
     }
 
     private void writeLog(FileOutputStream fos, String content) {
+
+        if (!isLog)
+            return;
+
         if (fos != null) {
             try {
                 fos.write(content.getBytes());

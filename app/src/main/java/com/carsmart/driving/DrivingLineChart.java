@@ -23,6 +23,13 @@ public class DrivingLineChart extends View {
             "0.9", "0.8", "0.7", "0.6", "0.5", "0.4", "0.3", "0.2", "0.1", "0.0",
             "Min"};
 
+//    private final String[] yText = new String[]{
+//            "Max",
+//            "10.0",
+//            "9.5", "9.0", "8.5", "8.0", "7.5", "7.0", "6.5", "6.0", "5.5", "5.0",
+//            "4.5", "4.0", "3.5", "3.0", "2.5", "2.0", "1.5", "1.0", "0.5", "0.0",
+//            "Min"};
+
     private final int minWidth = 400;
     private final int minHeight = 300;
 
@@ -185,10 +192,10 @@ public class DrivingLineChart extends View {
 
     private int getValueY(float f) {
         float value = f - baseValue;
-        int i = (int) (value * 10);
+        int i = (int) (value * 0.5);
         int y = i * ih;
-        float d = value - i * 0.1f;
-        return baseY - (y + (int) (d * ih * 10));
+        float d = value - i * 0.5f;
+        return baseY - (y + (int) (d * ih / 0.5));
     }
 
 

@@ -20,12 +20,15 @@ public class SensorProvider {
     private SensorManager mSensorManager;
     private OnSensorListener sensorListener;
     private OnVelocityListener velocityListener;
+    private StateAnalyzing.OnStateAnalyzingListener stateAnalyzingListener;
 
     private static final float HIGH_ALPHA = 0.8f;
     private float[] gravity = new float[3];
     private SensorHelper mSensorHelper;
 
     FilterAlgorithm filterAlgorithm;
+
+    StateAnalyzing stateAnalyzing;
 
     private int axis;
 
@@ -36,9 +39,13 @@ public class SensorProvider {
 
     public void init() {
         axis = Integer.valueOf(Utils.getString(mContext, "axis", "4"));
-        mSensorHelper = new SensorHelper(mContext);
         filterAlgorithm = new FilterAlgorithm(mContext);
+        mSensorHelper = new SensorHelper(mContext);
         mSensorHelper.setOnVelocityListener(velocityListener);
+
+        stateAnalyzing = new StateAnalyzing();
+        stateAnalyzing.setListener(stateAnalyzingListener);
+
         mSensorManager.registerListener(sensorEventListener, mSensorManager
                 .getDefaultSensor(SENSOR_TYPE), SensorManager.SENSOR_DELAY_FASTEST);
     }
@@ -74,7 +81,6 @@ public class SensorProvider {
         if (axis == 3)
             return zz;
 
-
         double pow_x = Math.pow(xx, 2);
         double pow_y = Math.pow(yy, 2);
         double pow_z = Math.pow(zz, 2);
@@ -93,13 +99,19 @@ public class SensorProvider {
         public void onSensorChanged(SensorEvent sensorEvent) {
             if (SENSOR_TYPE == sensorEvent.sensor.getType()) {
                 float[] values = sensorEvent.values.clone();
+
+                stateAnalyzing.setXYZ(values[0], values[1], values[2]);
+
                 if (sensorListener != null) {
                     sensorListener.onSensorOriginal(values[0], values[1], values[2]);
                 }
+
                 values = filter(values);
+
                 if (sensorListener != null) {
                     sensorListener.onSensorDenoise(values[0], values[1], values[2]);
                 }
+
                 float acceleration = acceleration(values[0], values[1], values[2]);
 
                 mSensorHelper.setAcceleration(acceleration);
@@ -126,6 +138,10 @@ public class SensorProvider {
 
     public void setVelocityListener(OnVelocityListener listener) {
         this.velocityListener = listener;
+    }
+
+    public void setStateAnalyzingListener(StateAnalyzing.OnStateAnalyzingListener listener) {
+        this.stateAnalyzingListener = listener;
     }
 
     public interface OnSensorListener {
